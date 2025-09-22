@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="https://unpkg.com/mqtt/dist/mqtt.min.js"></script>
+    <script>
+      var client;
+      function connect() {
+        client = mqtt.connect("c55a3554e4d34ec2ba9d368cc262e3b2.s1.eu.hivemq.cloud:8884/mqtt", {
+          username: "WaIoT",
+          password: "Wan_811223"
+        });
+
+        client.on("connect", function () {
+          console.log("Connected to HiveMQ!");
+          client.subscribe("lampu/status");
+          client.subscribe("plug/status");
+        });
+
+        client.on("message", function (topic, message) {
+          window.AppInventor.setWebViewString(topic + ":" + message.toString());
+        });
+      }
+
+      function publishMessage(topic, msg) {
+        client.publish(topic, msg);
+      }
+
+      window.onload = connect;
+    </script>
+  </head>
+  <body>
+    <h3>MQTT Web Client for MIT App</h3>
+  </body>
+</html>
